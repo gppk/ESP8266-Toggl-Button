@@ -288,10 +288,11 @@ const bool isTimerActive(){
 
   Serial.println("asking if timer is active");
   bool output;  
-  String wid = getTimerData("wid"); //Just using a filter for less data.
+  String id = getTimerData("id"); //Just using a filter for less data.
   Serial.print("Status Data: ");
-  Serial.println(wid);
-  if(wid != "null"){
+  Serial.println(id);
+  TogglTimerID = id;
+  if(id != "null"){
     output = true;
     Serial.println("Status == running");
     colorWipe(pixels.Color(0,   255,   0)     , 50); // Green
@@ -337,6 +338,7 @@ const String getTimerData(String Input){
         deserializeJson(doc, https.getString(), DeserializationOption::Filter(filter));
         const String TMP_Str = doc["data"][Input];
         Output = TMP_Str;
+        
         doc.garbageCollect();
         filter.garbageCollect();
     }
