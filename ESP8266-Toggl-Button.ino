@@ -25,7 +25,7 @@ void colorWipe(uint32_t color, int wait);
 void setAuth(String const& Token);
 void connectToWifi();
 String httpGETRequest();
-const String StartTimeEntry(String const& Description, String const& Tags,String const& CreatedWith);
+const String StartTimeEntry(String const& Description, String const& Tags, int const& TogglProjectId,String const& CreatedWith);
 const String StopTimeEntry(String const& ID);
 const bool isTimerActive();
 const String getTimerData(String Input);
@@ -91,7 +91,7 @@ void loop() {
     // Change the toggl timer state if needed
     if (togglTimerState && hasChanged){
       colorWipe(pixels.Color(255,  51,   255)     , 50); // Pink
-      TogglTimerID = (StartTimeEntry("Warhammer Work", "unreviewed", "ESP-Button"));
+      TogglTimerID = (StartTimeEntry("Project Desk", "TagName", TogglProjectId, "ESP-Button"));
       delay(1000); // Ensure we don't overload the API
       togglTimerState = isTimerActive();
       hasChanged = false;
@@ -208,7 +208,7 @@ String httpGETRequest() {
 }
 
 // Borrowed from the toggl library which wouldn't compile so I'm doing it the hard way
-const String StartTimeEntry(String const& Description, String const& Tags, String const& CreatedWith){
+const String StartTimeEntry(String const& Description, String const& Tags, int const& TogglProjectId, String const& CreatedWith){
 
   Serial.println("Sending StartTimeEntry request");
   String payload;
